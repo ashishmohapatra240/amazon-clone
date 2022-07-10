@@ -23,9 +23,8 @@ const userSchema = mongoose.Schema({
     require: true,
     type: String,
     validator: (value) => {
-        
-        return value.length> 6;
-      },
+      return value.length > 6;
+    },
   },
   address: {
     type: String,
