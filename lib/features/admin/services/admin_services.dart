@@ -47,7 +47,7 @@ class AdminServices {
           },
           body: product.toJson(),
         );
-
+        print(response.body);
         httpErrorHandler(
             response: response,
             context: context,
@@ -63,11 +63,12 @@ class AdminServices {
 
   //get all products
   Future<List<Product>> fetchAllProducts(BuildContext context) async {
-    final userProvider = Provider.of<UserProvider>(context);
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
     List<Product> productList = [];
+    print(userProvider.user.token);
     try {
       http.Response res = await http.get(
-        Uri.parse('$uri/admin/get-products'),
+        Uri.parse('$uri/admin/get-product'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'x-auth-token': userProvider.user.token,
@@ -78,19 +79,51 @@ class AdminServices {
           response: res,
           context: context,
           onSuccess: () {
-            for (int i = 0; i < jsonDecode(res.body).length; i++) {
+            for (var data in jsonDecode(res.body)) {
               productList.add(
                 Product.fromJson(
                   jsonEncode(
-                    jsonDecode(res.body)[i],
+                    data,
                   ),
                 ),
               );
             }
           });
     } catch (e) {
+      // print(e.toString());
       showSnackbar(context, e.toString());
     }
     return productList;
+  }
+
+//delete product
+  void deleteProduct(
+      {required BuildContext context,
+      required Product product,
+      required VoidCallback onSuccess}) async {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    try {
+      http.Response response = await http.post(
+        Uri.parse('$uri/admin/delete-product'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'x-auth-token': userProvider.user.token,
+        },
+        body: jsonEncode(
+          {
+            'id': product.id,
+          },
+        ),
+      );
+      print(response.body);
+      httpErrorHandler(
+          response: response,
+          context: context,
+          onSuccess: () {
+            onSuccess();
+          });
+    } catch (e) {
+      showSnackbar(context, e.toString());
+    }
   }
 }

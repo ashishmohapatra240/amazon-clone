@@ -2,9 +2,11 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:amazon_clone/constants/global_variables.dart';
+
 
 void showSnackbar(BuildContext context, String text) {
-  ScaffoldMessenger.of(context).showSnackBar(
+  Keys.messangerKey.currentState?.showSnackBar(
     SnackBar(
       content: Text(text),
     ),

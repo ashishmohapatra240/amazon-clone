@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 
 String uri = 'http://127.0.0.1:3000';
 
+class Keys {
+  static final messangerKey = GlobalKey<ScaffoldMessengerState>();
+}
+
 class GlobalVariables {
   // COLORS
   static const appBarGradient = LinearGradient(

@@ -22,6 +22,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
   final TextEditingController priceController = TextEditingController();
   final TextEditingController quantityController = TextEditingController();
   final AdminServices adminServices = AdminServices();
+  
 
   String category = 'Mobiles';
   List<File> images = [];
