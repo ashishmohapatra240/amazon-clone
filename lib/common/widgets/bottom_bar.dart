@@ -103,7 +103,7 @@ class _BottomBarState extends State<BottomBar> {
                 badgeColor: Colors.white,
                 child: Icon(
                   Icons.shopping_cart_outlined,
-                ),
+                ),  
               ),
             ),
             label: '',
