@@ -47,7 +47,6 @@ class AdminServices {
           },
           body: product.toJson(),
         );
-        print(response.body);
         httpErrorHandler(
             response: response,
             context: context,
@@ -65,7 +64,6 @@ class AdminServices {
   Future<List<Product>> fetchAllProducts(BuildContext context) async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     List<Product> productList = [];
-    print(userProvider.user.token);
     try {
       http.Response res = await http.get(
         Uri.parse('$uri/admin/get-product'),

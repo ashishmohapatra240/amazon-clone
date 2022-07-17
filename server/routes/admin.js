@@ -37,7 +37,7 @@ adminRouter.get("/admin/get-product", admin, async (req, res) => {
   }
 });
 
-//Get all Products
+//Delete all Productss
 adminRouter.post("/admin/delete-product", admin, async (req, res) => {
   try {
     const { id } = req.body;
@@ -49,4 +49,3 @@ adminRouter.post("/admin/delete-product", admin, async (req, res) => {
 });
 
 module.exports = adminRouter;
- 

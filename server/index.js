@@ -3,6 +3,8 @@ const mongoose = require("mongoose");
 
 const authRouter = require("./routes/auth.js");
 const adminRouter = require("./routes/admin.js");
+const productRouter = require("./routes/product.js");
+
 
 //INIT
 const PORT = process.env.PORT || 3000;
@@ -14,6 +16,8 @@ const DB =
 app.use(express.json());
 app.use(authRouter);
 app.use(adminRouter);
+app.use(productRouter);
+
 
 //Connections
 mongoose
