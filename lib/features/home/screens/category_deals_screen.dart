@@ -26,6 +26,7 @@ class _CategoryDealsScreenState extends State<CategoryDealsScreen> {
   fetchCategoryProducts() async {
     productList = await homeServices.fetchCategoryProducts(
         context: context, category: widget.category);
+
     setState(() {});
   }
 
@@ -74,7 +75,7 @@ class _CategoryDealsScreenState extends State<CategoryDealsScreen> {
                             onTap: () {
                               Navigator.pushNamed(
                                 context,
-                                ProductDetailsScreen.routeName,
+                                ProductDetailScreen.routeName,
                                 arguments: product,
                                );
                             },

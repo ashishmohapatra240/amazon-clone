@@ -1,43 +1,30 @@
-import 'package:amazon_clone/common/widgets/loader.dart';
+import 'package:amazon_clone/common/widgets/custom_button.dart';
 import 'package:amazon_clone/constants/global_variables.dart';
+import 'package:amazon_clone/features/cart/widgets/car_product.dart';
+import 'package:amazon_clone/features/cart/widgets/cart_subtotal.dart';
 import 'package:amazon_clone/features/home/screens/widgets/address_box.dart';
-import 'package:amazon_clone/features/product_details/screens/product_details_screen.dart';
-import 'package:amazon_clone/features/search/services/search_services.dart';
-import 'package:amazon_clone/features/search/widgets/searched_product.dart';
-import 'package:amazon_clone/models/product.dart';
+import 'package:amazon_clone/features/search/screens/search_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class SearchScreen extends StatefulWidget {
-  static const String routeName = '/search-screen';
-  final String searchQuery;
-  const SearchScreen({super.key, required this.searchQuery});
+import '../../../provider/user_provider.dart';
+
+class CartScreen extends StatefulWidget {
+  const CartScreen({Key? key}) : super(key: key);
 
   @override
-  State<SearchScreen> createState() => _SearchScreenState();
+  State<CartScreen> createState() => _CartScreenState();
 }
 
-class _SearchScreenState extends State<SearchScreen> {
-  List<Product>? products;
-  final SearchServices searchServices = SearchServices();
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    fetchSearchedProducts();
-  }
-
+class _CartScreenState extends State<CartScreen> {
   void navigateToSearchScreen(String query) {
     Navigator.pushNamed(context, SearchScreen.routeName, arguments: query);
   }
 
-  fetchSearchedProducts() async {
-    products = await searchServices.fetchSearchedProducts(
-        context: context, searchQuery: widget.searchQuery);
-    setState(() {});
-  }
-
   @override
   Widget build(BuildContext context) {
+    final user = context.watch<UserProvider>().user;
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),
@@ -126,42 +113,33 @@ class _SearchScreenState extends State<SearchScreen> {
           ),
         ),
       ),
-      body: products == null
-          ? const Loader()
-          : Column(
-              children: [
-                const AddressBox(),
-                const SizedBox(height: 10),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: products!.length,
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(
-                            context,
-                            ProductDetailScreen.routeName,
-                            arguments: products![index],
-                          );
-                        },
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.pushNamed(
-                              context,
-                              ProductDetailScreen.routeName,
-                              arguments: products![index],
-                            );
-                          },
-                          child: SearchedProduct(
-                            product: products![index],
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ],
-            ),
+      body: SingleChildScrollView(
+          child: Column(
+        children: [
+          AddressBox(),
+          CartSubtotal(),
+          CustomButton(
+            text: 'Proceed to Buy (${user.cart.length} items)',
+            onTap: () {},
+            color: Colors.yellow[600],
+          ),
+          const SizedBox(
+            height: 50,
+          ),
+          Container(
+            color: Colors.black12.withOpacity(0.08),
+          ),
+          const SizedBox(
+            height: 5,
+          ),
+          ListView.builder(
+              itemCount: user.cart.length,
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                return CartProduct(index: index);
+              })
+        ],
+      )),
     );
   }
 }
