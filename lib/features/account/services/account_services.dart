@@ -50,6 +50,7 @@ class AccountServices {
       SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();
       await sharedPreferences.setString('x-auth-token', '');
+
       Navigator.pushNamedAndRemoveUntil(
         context,
         AuthScreen.routeName,

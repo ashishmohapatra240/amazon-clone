@@ -1,3 +1,4 @@
+import 'package:amazon_clone/features/account/services/account_services.dart';
 import 'package:amazon_clone/features/account/widgets/account_button.dart';
 import 'package:flutter/material.dart';
 
@@ -9,6 +10,7 @@ class TopButtons extends StatefulWidget {
 }
 
 class _TopButtonsState extends State<TopButtons> {
+  final AccountServices accountServices = AccountServices();
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -19,12 +21,16 @@ class _TopButtonsState extends State<TopButtons> {
             AccountButton(text: 'Turn Seller', onTap: () {}),
           ],
         ),
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
         Row(
           children: [
-            AccountButton(text: 'Log Out', onTap: () {}),
+            AccountButton(
+                text: 'Log Out',
+                onTap: () {
+                  accountServices.logOut(context);
+                }),
             AccountButton(text: 'Your Wish', onTap: () {}),
           ],
         ),
